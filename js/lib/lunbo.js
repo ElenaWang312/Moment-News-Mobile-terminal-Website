@@ -5,19 +5,17 @@
     window.Carrousel=function Carrousel (ul,num,lock) {
         this.carousel = ul;
         this.imageLis = ul.getElementsByTagName("li");
-        this.circle = ul.getElementsByTagName("span");
-        this.idx = 0;	//当前中间图片
-        this.next = 1;	//下一张
-        this.prev = num;	//上一张
+        // this.circle = ul.getElementsByTagName("span");
+        this.num=num;
+        this.idx = num;	//当前中间图片
+        this.next = num-1;	//下一张
+        this.prev = 0;	//上一张
         this.windowWidth=document.documentElement.clientWidth;
         this.timer=null;
         this.lock=lock;
         //console.log(this.windowWidth);
         //初始化
-        this.init = this.init();
-        //console.log(this.windowWidth);
-        //window.onresize =this.reset();
-        //console.log(this.circle[0]);
+        this.init = this.init();    
     }
 
     //屏幕尺寸改变重新执行初始化
@@ -32,43 +30,41 @@
        var imageLis=this.imageLis;
        var carousel=this.carousel;
        var idx = this.idx;	//当前中间图片
-       var next = 1;	//下一张
+       var next = this.next;	//下一张
        var prev = this.prev;	//上一张
-       var circle=this.circle;
-       //设置盒子的高度
-       //imageLis[idx].style.transition = "none";
-       //imageLis[next].style.transition = "none";
-       //imageLis[prev].style.transition = "none";
-       //console.log(circle[0]);
+       var num =this.num;
        carousel.style.height = windowWidth * (340 / 666) + "px";
-       for(var i =0; i<imageLis.length;i++){
-           imageLis[i].style.transition="none";
-           imageLis[i].style.transform = "translateX(" + 0 + "px)";
-           circle[i].style.right=12*i+"px";
-               }
-       //设置li的默认位置
-       for(var i = 1 ; i < imageLis.length ; i++){
+       setTimeout(function(){
+          // for(var i =0; i<imageLis.length;i++){
+          //  console.log(1);
+          //  // imageLis[i].style.zIndex=(-i*100);
+          //  // console.log(imageLis[i].style.zIndex);
+          //  // imageLis[i].style.transition="none";
+          //  // imageLis[i].style.transform = "translateX(" + 0 + "px)";
+          //  // circle[i].style.right=12*i+"px";
+          //      }
+          //设置li的默认位置
+          for(var i = num-1 ; i >= 0 ; i--){
            imageLis[i].style.transition="none";
            imageLis[i].style.transform = "translateX(" + windowWidth + "px)";
-       }
-       //imageLis[idx].style.transition = "none";
-       //imageLis[next].style.transition = "none";
-       //imageLis[prev].style.transition = "none";
-       //imageLis[idx].style.webkitTransform = "translateX(0px)";
-       //imageLis[next].style.webkitTransform = "translateX(" + windowWidth + "px)";
-       //imageLis[prev].style.webkitTransform = "translateX(" + -windowWidth + "px)";
+          }
+       }, 1000)
+   
+   
+      
+     
        this.create=this.create();
 
     }
     Carrousel.prototype.create=function (){
         var idx = this.idx;	//当前中间图片
-        var next = 1;	//下一张
+        var next = this.next;	//下一张
         var prev = this.prev;	//上一张
         var windowWidth=this.windowWidth;
         var carousel=this.carousel;
         var imageLis=this.imageLis;
-        var num= this.prev;
-        var circle=this.circle;
+        var num= this.num;
+        // var circle=this.circle;
         //事件监听
         carousel.addEventListener("touchstart",touchstartHandler,false);
         carousel.addEventListener("touchmove",touchmoveHandler,false);
@@ -153,9 +149,9 @@
                 next = idx;
                 idx = prev;
                 //改变next
-                prev--;
-                if(prev < 0){
-                    prev = num;
+                prev++;
+                if(prev > num){
+                    prev = 0;
                 }
                 //加上过渡
                 imageLis[idx].style.transition = "all 0.3s ease 0s";
@@ -177,7 +173,6 @@
                 imageLis[prev].style.transition = "all 0.3s ease 0s";
                 imageLis[idx].style.transition = "all 0.3s ease 0s";
                 imageLis[next].style.transition = "all 0.3s ease 0s";
-
                 //移动
                 imageLis[prev].style.webkitTransform = "translateX(" + -windowWidth + "px)";
                 imageLis[idx].style.webkitTransform = "translateX(0px)";
@@ -198,12 +193,11 @@
             prev = idx;
             idx = next;
             //改变next
-            next++;
-            if(next > num){
-                next = 0;
+            next--;
+            if(next < 0){
+                next = 3;
             }
 
-            //
             imageLis[next].style.transition = "none";
             imageLis[next].style.webkitTransform = "translateX(" + windowWidth + "px)";
 

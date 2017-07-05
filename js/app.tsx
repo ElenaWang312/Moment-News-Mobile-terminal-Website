@@ -1,4 +1,5 @@
 //组件基于类开发，使用面向对象开发
+
 let{Component}=React;
 let{render}=ReactDOM;
 
@@ -90,7 +91,7 @@ class Detail extends Component{
 	   return (
        <div className="detail">
            <h1>{this.props.data.title}</h1>
-           <p><span className="detail-comment">{"评论数：" + this.props.data.comment}</span></p>
+           <p className="detail-comment"><span>{"评论数：" + this.props.data.comment}</span></p>
            <img src={this.props.data.img}/>
            <p className="detail-content" dangerouslySetInnerHTML={content}></p>
            <div className="btn" onClick={this.goComment.bind(this,this.props.data.id)}>查看更多评论</div>
@@ -175,7 +176,7 @@ class Header extends Component{
 	render(){
 	  return (
           <header className="header">
-				<div className="login">登录</div>
+				<div className="login"></div>
 				<div className="go-back" onClick={this.props.goback}><span className="arrow"><span className="arrow"></span></span></div>
 				<h1>一刻新闻</h1>
 			</header>
